@@ -1,0 +1,40 @@
+{
+  "name": "moe-playground",
+  "description": "Moe's Personal Digital Playground - static SPA deployment",
+  "projectGroup": "Static Sites",
+  "lifecycle": "Default Lifecycle",
+  "deploymentProcess": {
+    "steps": [
+      {
+        "name": "Deploy Static Site",
+        "properties": {
+          "Octopus.Action.TargetRoles": "static-web"
+        },
+        "actions": [
+          {
+            "name": "Extract and Deploy",
+            "actionType": "Octopus.Script",
+            "properties": {
+              "Octopus.Action.Script.ScriptSource": "Inline",
+              "Octopus.Action.Script.Syntax": "Bash",
+              "Octopus.Action.Script.ScriptBody": "#!/bin/bash\nset -e\n\nENV=$(echo \"#{Octopus.Environment.Name}\" | tr '[:upper:]' '[:lower:]')\nWEBROOT=\"/opt/moe-playground/$ENV/www\"\nTMP_DIR=\"/tmp/moe-playground-$(date +%s)\"\n\necho \"Deploying moe-playground to $WEBROOT\"\n\n# Create directories\nmkdir -p $TMP_DIR\nmkdir -p $WEBROOT\n\n# Extract package\necho \"Extracting package...\"\nunzip -o \"#{Octopus.Action.Package[moe-playground].ExtractedPath}/moe-playground.*.zip\" -d $TMP_DIR\n\n# Sync to webroot\necho \"Syncing to webroot...\"\nrsync -av --delete $TMP_DIR/ $WEBROOT/\n\n# Set permissions\necho \"Setting permissions...\"\nchown -R www-data:www-data $WEBROOT\nchmod -R 755 $WEBROOT\n\n# Cleanup\necho \"Cleaning up...\"\nrm -rf $TMP_DIR\n\necho \"Deployment complete!\"\necho \"Site available at: https://playground$([ \"$ENV\" = \"dev\" ] && echo \".local\" || echo \"\").cyberninja.co.za\""
+            },
+            "packages": [
+              {
+                "name": "moe-playground",
+                "packageId": "moe-playground",
+                "feedId": "octopus-server-built-in"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "variables": {
+    "webroot_dev": "/opt/moe-playground/dev/www",
+    "webroot_prod": "/opt/moe-playground/prod/www",
+    "host_dev": "playground.local.cyberninja.co.za",
+    "host_prod": "playground.cyberninja.co.za"
+  }
+}
