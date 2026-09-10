@@ -149,7 +149,6 @@ export function Terminal() {
             onKeyDown={handleKeyDown}
             className="flex-1 bg-transparent text-gray-100 font-mono text-sm outline-none"
             placeholder="Type 'help' for commands..."
-            autoFocus
           />
         </div>
       </form>

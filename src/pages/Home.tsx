@@ -44,15 +44,20 @@ export function Home() {
           className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
         >
           <Button asChild size="lg" className="gap-2">
-            <Link to="/workshop">
+            <Link to="/desktop">
               <Zap className="w-5 h-5" />
-              ENTER THE WORKSHOP
+              ENTER DESKTOP
               <ArrowRight className="w-5 h-5" />
             </Link>
           </Button>
           <Button asChild variant="outline" size="lg" className="gap-2">
+            <Link to="/workshop">
+              WORKSHOP
+            </Link>
+          </Button>
+          <Button asChild variant="outline" size="lg" className="gap-2">
             <Link to="/projects">
-              VIEW PROJECTS
+              PROJECTS
             </Link>
           </Button>
         </motion.div>

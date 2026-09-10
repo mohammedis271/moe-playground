@@ -1,11 +1,8 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { RootLayout } from '@/layouts/RootLayout'
 import { Home } from '@/pages/Home'
-import { Workshop } from '@/pages/Workshop'
-import { Projects } from '@/pages/Projects'
-import { Terminal } from '@/pages/Terminal'
-import { Contact } from '@/pages/Contact'
+import { DesktopMode } from '@/pages/DesktopMode'
 import './index.css'
 
 const queryClient = new QueryClient()
@@ -21,21 +18,25 @@ const router = createBrowserRouter([
       },
       {
         path: 'workshop',
-        element: <Workshop />
+        element: <Navigate to="/desktop/workshop" replace />
       },
       {
         path: 'projects',
-        element: <Projects />
+        element: <Navigate to="/desktop/projects" replace />
       },
       {
         path: 'terminal',
-        element: <Terminal />
+        element: <Navigate to="/desktop/terminal" replace />
       },
       {
         path: 'contact',
-        element: <Contact />
+        element: <Navigate to="/desktop/contact" replace />
       }
     ]
+  },
+  {
+    path: '/desktop/*',
+    element: <DesktopMode />
   }
 ])
 

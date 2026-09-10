@@ -4,11 +4,14 @@ Moe's Personal Digital Playground — an interactive workshop/command-centre per
 
 ## 🚀 Features
 
+- **macOS-inspired Desktop Shell**: Full-screen desktop experience with wallpaper, menu bar, dock, and windowed apps
+- **Window Manager**: Draggable windows with focus management, z-order, minimize/close, and deep-link support
 - **Landing Page**: Hero section with system status panel (mock data clearly labeled)
 - **Interactive Terminal**: Retro-style terminal with commands (`help`, `whoami`, `projects`, `skills`, `status`, `contact`, `about`, `clear`)
 - **Workshop Dashboard**: Category navigation for Software, Infrastructure, AI, and Hardware
 - **Projects Explorer**: Detailed project cards with lightweight architecture diagrams (Release Hub pipeline visualization)
 - **Contact Page**: Form with validation using React Hook Form + Zod
+- **Desktop Apps**: Terminal, Workshop, Projects, Contact, and About wrapped as windowed applications
 
 ## 🛠️ Tech Stack
 
@@ -52,20 +55,50 @@ npm run test:ui
 npm run lint
 ```
 
+## 🖥️ Desktop Mode
+
+The portfolio features a macOS-inspired desktop shell for an immersive experience:
+
+1. Navigate to the landing page and click **"ENTER DESKTOP"**
+2. Or go directly to `/desktop` or `/desktop/:appId` for deep-linking
+3. Use the dock to open apps: Terminal, Workshop, Projects, About
+4. Windows are draggable, focusable, and can be minimized or closed
+5. URL syncs with focused app (`/desktop/terminal`, `/desktop/projects`, etc.)
+6. Mobile fallback: single-app fullscreen mode
+
+### Desktop Features
+
+- **Menu Bar**: Clock, date, and branding (top)
+- **Dock**: App launcher with hover effects (bottom)
+- **Window Manager**: Centralized state with z-order, focus, minimize/close
+- **Keyboard Focus**: Terminal only receives input when its window is focused
+- **Route Sync**: Deep links open/focus apps; closing clears URL
+- **Mobile Responsive**: Stacked or single-app mode on narrow screens
+
 ## 🏗️ Project Structure
 
 ```
 src/
 ├── components/
 │   ├── ui/              # shadcn/ui components
-│   └── terminal/        # Terminal component
+│   ├── terminal/        # Terminal component
+│   └── desktop/         # Desktop shell components
+│       ├── Desktop.tsx
+│       ├── MenuBar.tsx
+│       ├── Dock.tsx
+│       ├── Window.tsx
+│       └── apps/        # Windowed app wrappers
+├── contexts/            # React contexts
+│   └── DesktopContext.tsx  # Window manager state
 ├── pages/               # Route pages
 │   ├── Home.tsx
+│   ├── DesktopMode.tsx
 │   ├── Workshop.tsx
 │   ├── Projects.tsx
 │   ├── Terminal.tsx
 │   └── Contact.tsx
 ├── data/                # Typed data modules
+│   ├── apps.tsx         # Desktop app definitions
 │   ├── projects.ts
 │   ├── skills.ts
 │   ├── system.ts        # Mock system status with 'mock' flag
@@ -75,8 +108,12 @@ src/
 │   ├── terminal-parser.ts
 │   └── commands.ts
 ├── types/               # TypeScript type definitions
+│   ├── index.ts
+│   └── desktop.ts       # Window and app types
 ├── layouts/             # Layout components
 ├── test/                # Test files
+│   ├── terminal-parser.test.ts
+│   └── desktop.test.ts
 └── App.tsx              # Main app with router
 
 .github/workflows/       # CI/CD pipeline
@@ -85,10 +122,19 @@ src/
 
 ## 🧪 Testing
 
-Terminal command parser has full test coverage:
+Comprehensive test coverage for core features:
+
+**Terminal Parser Tests**:
 - Command parsing (help, whoami, projects, skills, status, contact, clear)
 - Humorous responses for unknown commands (sudo, rm, hack, etc.)
 - Edge cases (empty input, whitespace, special characters)
+
+**Window Manager Tests**:
+- Window creation (no duplicates for same app)
+- Focus and z-order management (only one focused window)
+- Minimize/close operations
+- Reopen after close (fresh window state)
+- Position and size updates
 
 ```bash
 npm run test:run

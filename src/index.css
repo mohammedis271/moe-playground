@@ -43,3 +43,10 @@ body {
     linear-gradient(to bottom, oklch(1 0 0 / 0.03) 1px, transparent 1px);
   background-size: 40px 40px;
 }
+
+#portal-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+}
