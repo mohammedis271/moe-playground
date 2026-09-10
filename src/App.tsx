@@ -6,6 +6,7 @@ import { Workshop } from '@/pages/Workshop'
 import { Projects } from '@/pages/Projects'
 import { Terminal } from '@/pages/Terminal'
 import { Contact } from '@/pages/Contact'
+import { DesktopMode } from '@/pages/DesktopMode'
 import './index.css'
 
 const queryClient = new QueryClient()
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
         element: <Contact />
       }
     ]
+  },
+  {
+    path: '/desktop/*',
+    element: <DesktopMode />
   }
 ])
 
