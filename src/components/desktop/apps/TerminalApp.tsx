@@ -1,27 +1,33 @@
 import { useEffect, useRef } from 'react'
 import { Terminal } from '@/components/terminal/Terminal'
 
-export function TerminalApp() {
+interface TerminalAppProps {
+  isFocused?: boolean
+}
+
+export function TerminalApp({ isFocused = true }: TerminalAppProps) {
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const handleFocus = () => {
-      const input = containerRef.current?.querySelector('input')
-      if (input) {
-        input.focus()
-      }
-    }
+    const input = containerRef.current?.querySelector('input')
+    if (!input) return
 
-    const container = containerRef.current
-    if (container) {
-      container.addEventListener('click', handleFocus)
-      handleFocus()
-      return () => container.removeEventListener('click', handleFocus)
+    if (isFocused) {
+      input.focus()
+    } else {
+      input.blur()
     }
-  }, [])
+  }, [isFocused])
+
+  const handleClick = () => {
+    if (isFocused) {
+      const input = containerRef.current?.querySelector('input')
+      input?.focus()
+    }
+  }
 
   return (
-    <div ref={containerRef} className="h-full">
+    <div ref={containerRef} className="h-full" onClick={handleClick}>
       <Terminal />
     </div>
   )

@@ -1,6 +1,7 @@
-import { useRef, useEffect, useState, Suspense } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { X, Minus } from 'lucide-react'
 import { useDesktop } from '@/contexts/DesktopContext'
+import { WindowContent } from './WindowContent'
 import type { WindowState, AppDefinition } from '@/types/desktop'
 
 interface WindowProps {
@@ -123,15 +124,11 @@ export function Window({ window, app }: WindowProps) {
         </div>
       </div>
       <div className="h-[calc(100%-52px)] overflow-auto">
-        <Suspense
-          fallback={
-            <div className="flex items-center justify-center h-full">
-              <div className="text-gray-400">Loading...</div>
-            </div>
-          }
-        >
-          <AppComponent />
-        </Suspense>
+        <WindowContent 
+          appId={app.id}
+          component={AppComponent}
+          isFocused={window.isFocused}
+        />
       </div>
     </div>
   )
